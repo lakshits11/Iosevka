@@ -3,8 +3,11 @@ name: Build Custom Iosevka afio
 on:
   push:
     paths:
-      - 'private-build-plans.toml' # Triggers build when you update the plan
-  workflow_dispatch: # Allows you to trigger the build manually from the GitHub Actions UI
+      - 'private-build-plans.toml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build-font:
@@ -18,20 +21,41 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Install ttfautohint
         run: sudo apt-get update && sudo apt-get install -y ttfautohint
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build afio font (TTF)
-        # Using the specific plan name 'afio'
         run: npm run build -- ttf::afio
 
-      - name: Upload built fonts
-        uses: actions/upload-artifact@v4
+      - name: Package fonts
+        run: |
+          mkdir -p release
+          find dist -type f -name "*.ttf" -exec cp {} release/ \;
+          
+          if [ ! -s release/*.ttf ]; then
+            echo "❌ Error: No TTF files were found after build!"
+            exit 1
+          fi
+          
+          cd release
+          zip -9 -r ../IosevkaAfio.zip *.ttf
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: iosevka-afio-font
-          # Pointing the path to the dist folder for 'afio'
-          path: dist/afio/ttf/*.ttf
+          tag_name: afio-${{ github.run_number }}
+          name: Iosevka Afio Build #${{ github.run_number }}
+          body: |
+            Automatic build of **Iosevka Afio**.
+            
+            - Build Number: ${{ github.run_number }}
+            - Commit: [${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})
+            - Trigger: ${{ github.event_name }}
+          files: IosevkaAfio.zip
+          draft: false
+          prerelease: false
