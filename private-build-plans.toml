@@ -1,0 +1,116 @@
+[buildPlans.afio]
+family = "afio"
+spacing = "normal"
+serifs = "sans"
+noCvSs = false
+exportGlyphNames = false
+
+[buildPlans.afio.variants.design]
+f = "flat-hook-serifless"
+percent = "rings-continuous-slash"
+
+[buildPlans.afio.slopes.Upright]
+angle = 0
+shape = "upright"
+menu = "upright"
+css = "normal"
+
+[buildPlans.afio.slopes.Italic]
+angle = 9.4
+shape = "italic"
+menu = "italic"
+css = "italic"
+
+###################################################################################################
+# Override default building weights
+# When buildPlans.<plan name>.weights is absent, all weights would built and mapped to
+# default values.
+# IMPORTANT : Currently "menu" and "css" property only support numbers between 0 and 1000.
+#             and "shape" properly only supports number between 100 and 900 (inclusive).
+#             If you decide to use custom weights you have to define all the weights you
+#             plan to use otherwise they will not be built.
+[buildPlans.afio.weights.Regular]
+shape = 400
+menu = 400
+css = 400
+
+[buildPlans.afio.weights.Bold]
+shape = 700
+menu = 700
+css = 700
+
+[buildPlans.afio.weights.Light]
+shape = 300
+menu = 300
+css = 300
+
+[buildPlans.afio.weights.Medium]
+shape = 500
+menu = 500
+css = 500
+
+[buildPlans.afio.weights.SemiBold]
+shape = 600
+menu = 600
+css = 600
+
+[buildPlans.afio.weights.ExtraBold]
+shape = 800
+menu = 800
+css = 800
+
+[buildPlans.afio.weights.Heavy]
+shape = 900
+menu = 900
+css = 900
+
+# End weight section
+###################################################################################################
+
+###################################################################################################
+# Override default building slant sets
+# Format: <upright|italic|oblique> = <"normal"|"italic"|"oblique">
+# When this section is absent, all slants would be built.
+
+[buildPlans.afio.slants]
+upright = "normal"
+italic = "italic"
+# oblique = "oblique"
+
+# End slant section
+###################################################################################################
+
+###################################################################################################
+# Override default building widths
+# When buildPlans.<plan name>.widths is absent, all widths would built and mapped to
+# default values.
+# IMPORTANT : Currently "shape" property only supports integers between 3 and 9 (inclusive), while
+#             "menu" only supports integers between 1 and 9 (inclusive).
+#             If you decide to use custom widths you have to define all the widths you
+#             plan to use otherwise they will not be built.
+
+[buildPlans.afio.widths.normal]
+shape = 540               # Width grade of glyph shapes. NOT actual character width.
+menu  = 6                 # Width grade for the font's names. NOT actual character width.
+css   = "semi-expanded"   # "font-stretch' property of webfont CSS.
+
+[buildPlans.afio.widths.Extended]
+shape = 600
+menu = 7
+css = "expanded"
+###################################################################################################
+# Metric overrides
+# Certain metrics like line height (leading) could be overridden in your build plan file.
+# Edit the values to change the metrics. Remove this section when overriding is not needed.
+
+# [buildPlans.afio.metric-override]
+# leading = 1250
+# winMetricAscenderPad = 0
+# winMetricDescenderPad = 0
+# powerlineScaleY = 1
+# powerlineScaleX = 1
+# powerlineShiftY = 0
+# powerlineShiftX = 0
+
+# End metric override section
+###################################################################################################
