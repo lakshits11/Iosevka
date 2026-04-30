@@ -1,0 +1,37 @@
+name: Build Custom Iosevka afio
+
+on:
+  push:
+    paths:
+      - 'private-build-plans.toml' # Triggers build when you update the plan
+  workflow_dispatch: # Allows you to trigger the build manually from the GitHub Actions UI
+
+jobs:
+  build-font:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install ttfautohint
+        run: sudo apt-get update && sudo apt-get install -y ttfautohint
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build afio font (TTF)
+        # Using the specific plan name 'afio'
+        run: npm run build -- ttf::afio
+
+      - name: Upload built fonts
+        uses: actions/upload-artifact@v4
+        with:
+          name: iosevka-afio-font
+          # Pointing the path to the dist folder for 'afio'
+          path: dist/afio/ttf/*.ttf
